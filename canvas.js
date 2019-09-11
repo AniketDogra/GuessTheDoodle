@@ -26,7 +26,7 @@ $('#canvas').mousemove(function(e){
 
 $("#canvas").mouseup(function(e){
     paint = false;
-    // predictImage();
+    predictImage();
 });
 
 $('#canvas').mouseleave(function(e){
@@ -70,3 +70,119 @@ function redraw(){
        context.stroke();
     }
 }
+
+async function loadClasses(){
+    await $.ajax({
+        url : "model/classes.txt",
+        dataType : 'text',
+    }).done(function(data){
+        const lst = data.split(/\r\n/);
+        for(var i = 0; i<lst.length - 1; i++ ){
+            let s = lst[i];
+            classNames[i] = s;
+        } 
+    });
+}
+
+
+function predictImage(){
+
+    if(clickX.length >= 2){
+
+        var img = getImage();
+        var preprocessed_image = preprocessing(img);
+        var pred = model.predict(preprocessed_image).dataSync();
+        const indices = getIndexOfTop(pred, 4);
+        const topValues = getTopValues(pred, 4);
+        const names = getClassNames(indices);
+
+        loadChart(names, topValues);
+
+    }
+}
+
+function getImage(){    
+    var minx = Math.min.apply(null,clickX);
+    var miny = Math.min.apply(null,clickY);
+    var maxx = Math.max.apply(null,clickX);
+    var maxy = Math.max.apply(null,clickY);
+    const imgData = context.getImageData(minx, miny, maxx - minx, maxy - miny);
+
+    return imgData;
+}
+
+
+function preprocessing(imgData){
+        let tensor = tf.browser.fromPixels(imgData, numChannels = 1);
+        var resized_image = tf.image.resizeBilinear(tensor, [28,28]).toFloat();
+        var normalised = resized_image.div(tf.scalar(105.0));
+        var final_img = normalised.expandDims(0);
+        return final_img;
+}
+
+async function start(){
+    model = await tf.loadLayersModel('model/model.json');
+    console.log(model.predict(tf.zeros([1, 28, 28, 1])).print());
+    await loadClasses();
+    let status = document.getElementById("status");
+    status.innerHTML = "Model Loaded";
+}
+
+
+// Functions to get Result Data
+
+function getIndexOfTop(data, num){
+    var indices = [];
+    var output = []
+    for (var i = 0; i < data.length; i++) {
+        indices.push(i); 
+        if (indices.length > num) {
+            indices.sort(function(a, b) {return data[b] - data[a]; }); 
+            indices.pop();         }
+    }
+    return indices;
+}
+
+function getTopValues(data, num){
+    var topValues = data.sort(function(a,b) {return b-a;}).slice(0,num);
+    return topValues;
+}
+
+function getClassNames(indices){
+    var outp = []
+    for(var i=0; i < indices.length; i++){
+        outp[i] = classNames[indices[i]];
+    }
+
+    return outp;
+}
+
+
+function loadChart(names, values) {
+    dps = [];
+    for(var i =0; i< 4; i++){
+        dps.push({y : Math.round((values[i] * 100)*100)/100, label: names[i]});
+    }
+
+
+    var chart = new CanvasJS.Chart("chartContainer", {
+        animationEnabled: true,
+        theme: "light2", // "light1", "light2", "dark1", "dark2"
+        title:{
+            text: "Predictions"
+        },
+        axisY: {
+            title: "Percentage"
+        },
+        axisX:{
+            title : "Class Name"
+        },
+        data: [{        
+            type: "column",  
+            dataPoints: dps
+        }]
+    });
+    chart.render();   
+}
+
+start();
