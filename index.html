@@ -6,13 +6,17 @@
         <title>Guess the Doodle</title>
         <meta name="description" content="">
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/kognise/water.css@latest/dist/light.min.css">
+        <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@1.0.0/dist/tf.min.js"></script>
         <script src="http://code.jquery.com/jquery-1.11.0.min.js"></script>
+        <script src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
         <meta name="viewport" content="width=device-width, initial-scale=1">
     </head>
     <body>
+        <h4 id = "status"> Model is Loading ...</h4>
         <canvas id="canvas" width="300" height="300" style="border: 1px solid black;"s></canvas>
         <h4>Clear Image <button id="clearbutton" type="button">Clear</button></h4>
         <br><br><br>
+        <div id="chartContainer" style="height: 300px; width: 100%;"></div>
         <script type="text/javascript" src="canvas.js"></script>
     </body>
 </html>
