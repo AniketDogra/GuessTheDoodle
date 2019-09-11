@@ -75,11 +75,13 @@ async function loadClasses() {
         url: "model/classes.txt",
         dataType: 'text',
     }).done(function(data) {
-        const lst = data.split(/\r\n/);
+        const lst = data.split(/\r?\n/);
         for (var i = 0; i < lst.length - 1; i++) {
             let s = lst[i];
             classNames[i] = s;
         }
+    }).fail(function(err) {
+        console.log(err);
     });
 }
 
