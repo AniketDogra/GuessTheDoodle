@@ -166,6 +166,7 @@ function loadChart(names, values) {
         dps.push({y : Math.round((values[i] * 100)*100)/100, label: names[i]});
     }
 
+    console.log(dps);
 
     var chart = new CanvasJS.Chart("chartContainer", {
         animationEnabled: true,
@@ -188,7 +189,7 @@ function loadChart(names, values) {
 }
 
 function setTopPrediction(names, values){
-    document.querySelector("#result").innerHTML = names[0] + " " + Math.round((values[0] * 100)*100)/100 + "%";
+    document.querySelector("#pred").innerHTML = names[0].toUpperCase() + " " + Math.round((values[0] * 100)*100)/100 + "%";
 }
 
 start();

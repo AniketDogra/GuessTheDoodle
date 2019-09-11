@@ -8,31 +8,20 @@
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/kognise/water.css@latest/dist/light.min.css">
         <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@1.0.0/dist/tf.min.js"></script>
         <script src="http://code.jquery.com/jquery-1.11.0.min.js"></script>
+        <!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css"> -->
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script> 
         <script src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
         <meta name="viewport" content="width=device-width, initial-scale=1">
     </head>
     <body>
+        <navbar>Abc</navbar>
         <h4 id = "status"> Model is Loading ...</h4>
+        <h4 id = "pred">...</h4>
         <canvas id="canvas" width="300" height="300" style="border: 1px solid black;"s></canvas>
         <h4>Clear Image <button id="clearbutton" type="button">Clear</button></h4>
         <br><br><br>
         <div id="chartContainer" style="height: 300px; width: 100%;"></div>
         
-
-        <style>
-            #top-predict {
-                position: fixed;
-                right: 300px;
-                top: 200px;
-                width: 400px;
-                height: 50px;
-            }
-        </style>
-    
-        <div id="top-predict">
-            Top Prediction:
-            <b><span id="result"></span></b>
-        </div>
         <script type="text/javascript" src="canvas.js"></script>
     </body>
 </html>
