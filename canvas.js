@@ -95,7 +95,7 @@ function predictImage(){
         const indices = getIndexOfTop(pred, 4);
         const topValues = getTopValues(pred, 4);
         const names = getClassNames(indices);
-
+        setTopPrediction(names, topValues);
         loadChart(names, topValues);
 
     }
@@ -106,7 +106,9 @@ function getImage(){
     var miny = Math.min.apply(null,clickY);
     var maxx = Math.max.apply(null,clickX);
     var maxy = Math.max.apply(null,clickY);
-    const imgData = context.getImageData(minx, miny, maxx - minx, maxy - miny);
+
+    const dpi = window.devicePixelRatio;
+    const imgData = context.getImageData(minx * dpi, miny * dpi, (maxx - minx)*dpi, (maxy - miny)*dpi);
 
     return imgData;
 }
@@ -183,6 +185,10 @@ function loadChart(names, values) {
         }]
     });
     chart.render();   
+}
+
+function setTopPrediction(names, values){
+    document.querySelector("#result").innerHTML = names[0] + " " + Math.round((values[0] * 100)*100)/100 + "%";
 }
 
 start();
