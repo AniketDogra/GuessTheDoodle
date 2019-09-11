@@ -164,7 +164,6 @@ function loadChart(names, values) {
         dps.push({ y: Math.round((values[i] * 100) * 100) / 100, label: names[i] });
     }
 
-    console.log(dps);
 
     var chart = new CanvasJS.Chart("chartContainer", {
         animationEnabled: true,
