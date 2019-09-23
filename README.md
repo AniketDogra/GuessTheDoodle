@@ -6,5 +6,5 @@ A website where the CNN model trained on Google's Quickdraw Dataset will guess t
 
 Screenshot:
 
-![](images/site.png?raw=true)
+![](images/site.PNG?raw=true)
 
